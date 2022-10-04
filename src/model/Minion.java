@@ -1,5 +1,10 @@
 package model;
 
+/**
+ * The most simple and easy enemy to defeat. Also the mos common
+ * @author andre
+ *
+ */
 public class Minion extends MainCharacter{
 	
 	public Minion(String name) {
@@ -11,7 +16,10 @@ public class Minion extends MainCharacter{
 		setAttack(3);
 		setSpeed(5);
 	}
-
+	
+	/**
+	 * The minion special passive is to heal every turn 4 hp
+	 */
 	@Override
 	public void specialAbility() {
 		int maxHP = this.getHP();

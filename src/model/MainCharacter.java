@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * This class defines the qualities of each different type of hero and also enemies
  * the constructor only saves name. The other charactersitcs 
- * and special ability may vary from each type of hero
+ * and special ability may vary from each type of hero or enemy
  * There will also only be 2 weopn slots (Only 2 weapons in the game)
  * @author Ricardo Chuy
  *
