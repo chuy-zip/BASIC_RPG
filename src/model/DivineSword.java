@@ -8,7 +8,7 @@ package model;
  */
 public class DivineSword extends Equipment{
 	
-	DivineSword(){
+	public DivineSword(){
 		setBonusAttack(5);
 		setBonusSpeed(3);
 	}

@@ -8,7 +8,7 @@ package model;
  */
 public class MagicShield extends Equipment{
 
-	MagicShield(){
+	public MagicShield(){
 		setBonusHP(7);
 		setBonusSpeed(2);
 	}
