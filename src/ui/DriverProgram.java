@@ -1,11 +1,15 @@
 package ui;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
+import controler.EventCombat;
 import controler.Store;
 import model.HeroExplorer;
 import model.HeroWarrior;
 import model.MainCharacter;
+import model.Minion;
+
 
 public class DriverProgram {
 	
@@ -13,18 +17,100 @@ public class DriverProgram {
 		
 		MainCharacter Hero;
 		Store GameStore = new Store();
+		EventCombat EventCombat = new EventCombat();
+		ArrayList<MainCharacter> Enemies = new ArrayList<MainCharacter>(); 
 		
 		Scanner sc = new Scanner(System.in);
 		Hero = CreateNewHero(sc);
 		ShowHeroStats(Hero);
 		
 		while(true) {
-			
-			
+		
 			int action = GetPlayerAction(sc);
 			
 			if(action == 1) {
 				
+				
+				int EnemiesQty = (int) ( Math.random() * 2 + 1);
+				for(int i = 0; i < EnemiesQty ; i++) {
+					Enemies.add(new Minion("Minion"));
+				}
+				System.out.println("Te enfrentas a: " + EnemiesQty + " Minion(s)");
+				
+				int turn = 1;
+				while(EventCombat.isCombatStatus()) {
+					/**
+					 * Al elegir la opcion de atacar
+					 */
+					if(turn == 1) {
+						
+						int battleOpt = battleMenu(sc);
+						/**
+						 * Esta la posibilidad de atacar o usar un item, la opcion 1 es para los items
+						 */
+						if(battleOpt == 1) {
+							
+							int target = targetAtack(sc);
+								
+							/**
+							 * Esta condicion es para poder saber cual es el objetivo a atacar
+							 */
+							if(target == 1) {
+								EventCombat.HeroAttack(Hero, Enemies, 0);
+							}
+							
+							/**
+							 * Solo será valido elegir a un segundo objetivo si hay 2 objetivos
+							 */
+							else if(target == 2 && Enemies.size() == 2) {
+								EventCombat.HeroAttack(Hero, Enemies, 1);
+							}
+						}
+						
+						/**
+						 * La segunda opcion para el menu de ataque es utilizar un item
+						 */
+						else if (battleOpt == 2) {
+							int itemOption = ItemSelection(sc);
+							System.out.println(itemOption);
+							if(itemOption == 1) {
+								EventCombat.UseSelfitem(Hero, "Recovery Potion");
+							}
+							else if(itemOption == 2){
+								EventCombat.UseAtackItem(Hero, Enemies,"Dangerous Potion");
+							}
+							
+							
+						}
+						
+						/**
+						 * Revisar al final del turno del jugador si quedan enemigos
+						 */
+						EventCombat.deleteDefeatedEnemies(Enemies);
+						if(Enemies.size() < 1) {
+							EventCombat.setCombatStatus(false);
+						}
+						
+						turn = 2;
+					}
+					
+					/**
+					 * Para el turno del enemigo, se ataca por cada enemigo en el array
+					 */
+					else if(turn == 2) {
+						EventCombat.EnemyAttack(Enemies, Hero);
+						
+						if(Hero.getCurrentHP() <= 0) {
+							System.out.println("GameOver");
+							EventCombat.setCombatStatus(false);
+							System.exit(0);
+							
+						}
+						
+						turn = 1;
+					}
+					
+				}
 			}
 			else if(action == 2) {
 				ShowHeroStats(Hero);
@@ -109,7 +195,7 @@ public class DriverProgram {
 		}
 			
 	}
-	
+
 	/**
 	 * Method that cerates a new hero at the beginning of the program
 	 * @param scan
@@ -149,7 +235,7 @@ public class DriverProgram {
 	 * Show the stats of a character
 	 * @param hero
 	 */
-	public static void ShowHeroStats(MainCharacter hero) {
+	private static void ShowHeroStats(MainCharacter hero) {
 		System.out.println(hero);
 		for(int i = 0; i < hero.getInventory().size() ; i++) {
 			System.out.println("Item: " + hero.getInventory().get(i).getName());
@@ -181,5 +267,26 @@ public class DriverProgram {
 		return Choice;
 	}
 
-
+	
+	private static int battleMenu(Scanner scan) {
+		System.out.println("\nSelect the action you want to do");
+		System.out.println("1. Atacar\n" + 
+				"\n2. Utilizar un item\n");
+		int Choice = Integer.parseInt(scan.next());
+		return Choice;
+	}
+	
+	private static int targetAtack(Scanner scan) {
+		System.out.println("Desea atackar al objetivo 1 o al 2");
+		int choice = Integer.parseInt(scan.next());
+		
+		return choice;
+	}
+	private static int ItemSelection(Scanner scan) {
+		System.out.println("Deseas gastar una pocion de curacion (1) o una pocion de ataque (2)");
+		int choiceItem = Integer.parseInt(scan.next());
+		
+		return choiceItem;
+	}
+	
 }
