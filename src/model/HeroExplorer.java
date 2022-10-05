@@ -24,4 +24,11 @@ public class HeroExplorer extends MainCharacter{
 		getInventory().add(new DmgPot());
 		
 	}
+	@Override
+	public void specialAbility() {
+		setGold(getGold() + 5);
+		System.out.println("Has ganado 5 monedas por tu habilidad especial");
+	}
+	
+	
 }

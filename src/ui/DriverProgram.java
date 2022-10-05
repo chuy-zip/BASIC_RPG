@@ -10,7 +10,6 @@ import model.HeroWarrior;
 import model.MainCharacter;
 import model.Minion;
 
-
 public class DriverProgram {
 	
 	public static void main(String[] args) {
@@ -30,7 +29,6 @@ public class DriverProgram {
 			
 			if(action == 1) {
 				
-				
 				int EnemiesQty = (int) ( Math.random() * 2 + 1);
 				for(int i = 0; i < EnemiesQty ; i++) {
 					Enemies.add(new Minion("Minion"));
@@ -38,6 +36,8 @@ public class DriverProgram {
 				System.out.println("Te enfrentas a: " + EnemiesQty + " Minion(s)");
 				
 				int turn = 1;
+				EventCombat.setCombatStatus(true);
+				
 				while(EventCombat.isCombatStatus()) {
 					/**
 					 * Al elegir la opcion de atacar
@@ -86,7 +86,8 @@ public class DriverProgram {
 						/**
 						 * Revisar al final del turno del jugador si quedan enemigos
 						 */
-						EventCombat.deleteDefeatedEnemies(Enemies);
+						EventCombat.deleteEnemies(Enemies);
+						System.out.println(Enemies.size());
 						if(Enemies.size() < 1) {
 							EventCombat.setCombatStatus(false);
 						}
@@ -100,6 +101,9 @@ public class DriverProgram {
 					else if(turn == 2) {
 						EventCombat.EnemyAttack(Enemies, Hero);
 						
+						/**
+						 * Si la vida del jugaor llega a 0 se pierde el juego
+						 */
 						if(Hero.getCurrentHP() <= 0) {
 							System.out.println("GameOver");
 							EventCombat.setCombatStatus(false);
@@ -109,7 +113,11 @@ public class DriverProgram {
 						
 						turn = 1;
 					}
-					
+					/**
+					 * Mostrar las estadisticas luego de 1 turno
+					 */
+					ShowHeroStats(Hero);
+					showEnemiesStats(Enemies);
 				}
 			}
 			else if(action == 2) {
@@ -239,6 +247,15 @@ public class DriverProgram {
 		System.out.println(hero);
 		for(int i = 0; i < hero.getInventory().size() ; i++) {
 			System.out.println("Item: " + hero.getInventory().get(i).getName());
+			
+		}
+		System.out.println("#############################");
+	}
+	
+	private static void showEnemiesStats(ArrayList<MainCharacter> enemies) {
+		for(int i = 0; i < enemies.size(); i++) {
+			System.out.println(enemies.get(i));
+			System.out.println("#############################");
 		}
 	}
 	

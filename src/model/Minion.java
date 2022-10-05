@@ -12,7 +12,7 @@ public class Minion extends MainCharacter{
 		setHeroType(2);
 		setHP(10);
 		setCurrentHP(10);
-		setGold(5);
+		setGold(50);
 		setAttack(3);
 		setSpeed(5);
 	}
@@ -31,12 +31,14 @@ public class Minion extends MainCharacter{
 		 */
 		if(currentHP + healingHP < maxHP) {
 			this.setCurrentHP(currentHP + healingHP);
+			System.out.println("El minion se ha curado 4 puntos de vida por su habilidad especial");
 		}
 		/**
 		 * If the healing hp is going to be bigger than max HP, then set HP to MaxHP
 		 */
 		else if(currentHP + healingHP > maxHP){
 			this.setCurrentHP(maxHP);
+			System.out.println("El minion se ha curado 4 puntos de vida por su habilidad especial");
 
 		}
 		

@@ -21,4 +21,9 @@ public class HeroWarrior extends MainCharacter{
 		getInventory().add(new DmgPot());
 		
 	}
+	
+	public void specialAbility() {
+		setAttack(getAttack() + 1);
+		System.out.println("Se ha incrementado tu ataque en una unidad por la habilidad especial!");
+	}
 }
