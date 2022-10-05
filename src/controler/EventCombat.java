@@ -13,16 +13,20 @@ public class EventCombat {
 		this.turn = 1; 
 		this.combatStatus = true;
 	}
-
+	/**
+	 * Method that makes the hero deal damage
+	 * @param hero
+	 * @param enemies
+	 * @param target
+	 */
 	public void HeroAttack(MainCharacter hero, ArrayList<MainCharacter> enemies, int target) {
-		System.out.println("Enemigo objetivo: " + target);
-
+		enemies.get(target).setCurrentHP(enemies.get(target).getCurrentHP() - hero.getAttack());
 	}
 	
 	public void EnemyAttack(ArrayList<MainCharacter> enemies, MainCharacter hero) {
 		for(MainCharacter anEnemy:enemies) {
-			System.out.println("Enemigo ataco");
-			
+			hero.setCurrentHP(hero.getCurrentHP() - anEnemy.getAttack());
+			System.out.println("\nEnemigo ha atacado_________________________________________________");
 		}
 	}
 	/**
@@ -42,14 +46,19 @@ public class EventCombat {
 		}
 		System.out.println("No esta disponible el item");
 	}
-	
+	/**
+	 * Method for items that deal damage
+	 * @param Hero
+	 * @param enemies
+	 * @param ItemName
+	 */
 	public void UseAtackItem(MainCharacter Hero, ArrayList<MainCharacter> enemies, String ItemName) {
 		for(int i = 0; i < Hero.getInventory().size(); i++) {
 			if(Hero.getInventory().get(i).getName().equals(ItemName) ) {
 				
 				for(MainCharacter anEnemy:enemies) {
 					Hero.getInventory().get(i).AppplyPotionEffect(anEnemy);
-					System.out.println("Applied damage to all");
+					System.out.println("Enemigo golpeado por pocion");
 					
 				}
 				Hero.getInventory().remove(i);
@@ -68,14 +77,27 @@ public class EventCombat {
 		this.combatStatus = combatStatus;
 	}
 	
-	public void deleteEnemies(ArrayList<MainCharacter> enemies) {
-		if(enemies.get(1).getCurrentHP() <= 0) {
-			enemies.remove(1);
-		}
-		if(enemies.get(0).getCurrentHP() <= 0) {
-			enemies.remove(0);
+	public void deleteEnemies(ArrayList<MainCharacter> enemies, MainCharacter Hero) {
+		if(enemies.size() == 2) {
+			if(enemies.get(1).getCurrentHP() <= 0) {
+				Hero.setGold(Hero.getGold() + enemies.get(1).getGold());
+				System.out.println("\nHas ganado monedas por derrotar a un enemigo\n");
+				enemies.remove(1);
+			}
+			if(enemies.get(0).getCurrentHP() <= 0) {
+				Hero.setGold(Hero.getGold() + enemies.get(0).getGold());
+				System.out.println("\nHas ganado monedas por derrotar a un enemigo\n");
+				enemies.remove(0);
+			}
 		}
 		
+		else if(enemies.size() == 1) {
+			if(enemies.get(0).getCurrentHP() <= 0) {
+				Hero.setGold(Hero.getGold() + enemies.get(0).getGold());
+				System.out.println("\nHas ganado monedas por derrotar a un enemigo\n");
+				enemies.remove(0);
+			}
+		}
 	}
 
 }

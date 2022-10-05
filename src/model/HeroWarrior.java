@@ -11,9 +11,9 @@ public class HeroWarrior extends MainCharacter{
 		super(name);
 		setHeroType(0);
 		setHP(12);
-		setCurrentHP(12);
-		setGold(0);
-		setAttack(6);
+		setCurrentHP(9000);
+		setGold(1000);
+		setAttack(6000);
 		setSpeed(1);
 		
 		getInventory().add(new HealthPot());
@@ -24,6 +24,6 @@ public class HeroWarrior extends MainCharacter{
 	
 	public void specialAbility() {
 		setAttack(getAttack() + 1);
-		System.out.println("Se ha incrementado tu ataque en una unidad por la habilidad especial!");
+		System.out.println("\nSe ha incrementado tu ataque en una unidad por la habilidad especial!\n");
 	}
 }

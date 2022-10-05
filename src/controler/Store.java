@@ -51,15 +51,17 @@ public class Store {
 	}
 	
 	public void buyShield(MainCharacter hero){
-		if(hero.getWeapons()[0] != this.DivineSword) {
-			hero.getWeapons()[0] = this.DivineSword;
+		if(hero.getWeapons()[1] != this.DivineSword) {
+			hero.getWeapons()[1] = this.DivineSword;
+			hero.getWeapons()[1].ApplyBonuses(hero);
 			hero.setGold(hero.getGold() - 300);
 		}
 	}
 	
 	public void buySword(MainCharacter hero){
-		if(hero.getWeapons()[1] != this.MagicShield) {
-			hero.getWeapons()[1] = this.MagicShield;
+		if(hero.getWeapons()[0] != this.MagicShield) {
+			hero.getWeapons()[0] = this.MagicShield;
+			hero.getWeapons()[0].ApplyBonuses(hero);
 			hero.setGold(hero.getGold() - 200);
 		}
 	}

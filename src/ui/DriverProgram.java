@@ -7,6 +7,7 @@ import controler.EventCombat;
 import controler.Store;
 import model.HeroExplorer;
 import model.HeroWarrior;
+import model.Mage;
 import model.MainCharacter;
 import model.Minion;
 
@@ -40,7 +41,7 @@ public class DriverProgram {
 				
 				while(EventCombat.isCombatStatus()) {
 					/**
-					 * Al elegir la opcion de atacar
+					 * Al elegir la opcion de atacar empieza el combate por turnos
 					 */
 					if(turn == 1) {
 						
@@ -57,6 +58,7 @@ public class DriverProgram {
 							 */
 							if(target == 1) {
 								EventCombat.HeroAttack(Hero, Enemies, 0);
+								Hero.specialAbility();
 							}
 							
 							/**
@@ -64,6 +66,7 @@ public class DriverProgram {
 							 */
 							else if(target == 2 && Enemies.size() == 2) {
 								EventCombat.HeroAttack(Hero, Enemies, 1);
+								Hero.specialAbility();
 							}
 						}
 						
@@ -86,7 +89,7 @@ public class DriverProgram {
 						/**
 						 * Revisar al final del turno del jugador si quedan enemigos
 						 */
-						EventCombat.deleteEnemies(Enemies);
+						EventCombat.deleteEnemies(Enemies, Hero);
 						System.out.println(Enemies.size());
 						if(Enemies.size() < 1) {
 							EventCombat.setCombatStatus(false);
@@ -100,12 +103,15 @@ public class DriverProgram {
 					 */
 					else if(turn == 2) {
 						EventCombat.EnemyAttack(Enemies, Hero);
+						for(int i = 0; i < Enemies.size(); i++) {
+							Enemies.get(i).specialAbility();
+						}
 						
 						/**
 						 * Si la vida del jugaor llega a 0 se pierde el juego
 						 */
 						if(Hero.getCurrentHP() <= 0) {
-							System.out.println("GameOver");
+							System.out.println("GameOver, te has quedado sin puntos de salud");
 							EventCombat.setCombatStatus(false);
 							System.exit(0);
 							
@@ -194,6 +200,80 @@ public class DriverProgram {
 			}
 			
 			else if(action == 4) {
+				Enemies.add(new Mage("Mago"));
+				
+				System.out.println("Te enfrentas a un poderoso mago, cuidado!");
+				ShowHeroStats(Hero);
+				showEnemiesStats(Enemies);
+				int turn = 1;
+				EventCombat.setCombatStatus(true);
+				while(EventCombat.isCombatStatus()) {
+					/**
+					 * Al elegir la opcion de atacar empieza el combate por turnos
+					 */
+					if(turn == 1) {
+						
+						int battleOpt = battleMenu(sc);
+						/**
+						 * Esta la posibilidad de atacar o usar un item, la opcion 1 es para los items
+						 */
+						if(battleOpt == 1) {
+							
+							EventCombat.HeroAttack(Hero, Enemies, 0);
+							Hero.specialAbility();
+						}
+						
+						/**
+						 * La segunda opcion para el menu de ataque es utilizar un item
+						 */
+						else if (battleOpt == 2) {
+							int itemOption = ItemSelection(sc);
+							System.out.println(itemOption);
+							if(itemOption == 1) {
+								EventCombat.UseSelfitem(Hero, "Recovery Potion");
+							}
+							else if(itemOption == 2){
+								EventCombat.UseAtackItem(Hero, Enemies,"Dangerous Potion");
+							}
+						}
+						
+						/**
+						 * Revisar al final del turno del jugador si quedan enemigos
+						 */
+						EventCombat.deleteEnemies(Enemies, Hero);
+						System.out.println(Enemies.size());
+						if(Enemies.size() < 1) {
+							EventCombat.setCombatStatus(false);
+						}
+						turn = 2;
+					}
+					/**
+					 * Para el turno del enemigo, se ataca por cada enemigo en el array
+					 */
+					else if(turn == 2) {
+						EventCombat.EnemyAttack(Enemies, Hero);
+						for(int i = 0; i < Enemies.size(); i++) {
+							Enemies.get(i).specialAbility();
+						}
+						/**
+						 * Si la vida del jugaor llega a 0 se pierde el juego
+						 */
+						if(Hero.getCurrentHP() <= 0) {
+							System.out.println("GameOver, te has quedado sin puntos de salud");
+							EventCombat.setCombatStatus(false);
+							System.exit(0);
+							
+						}
+						
+						turn = 1;
+					}
+					/**
+					 * Mostrar las estadisticas luego de 1 turno
+					 */
+					ShowHeroStats(Hero);
+					showEnemiesStats(Enemies);
+				}	
+				
 				
 			}
 			else if(action == 5) {

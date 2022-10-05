@@ -24,7 +24,7 @@ public abstract class MainCharacter {
 	
 	public MainCharacter(String name){
 		setName(name);
-		Weapons = new Equipment[1];
+		Weapons = new Equipment[2];
 		Inventory = new ArrayList<Items>();
 	}
 

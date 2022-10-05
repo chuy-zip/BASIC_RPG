@@ -10,7 +10,7 @@ public class Mage extends MainCharacter{
 		setHeroType(3);
 		setHP(60);
 		setCurrentHP(60);
-		setGold(70);
+		setGold(100);
 		setAttack(20);
 		setSpeed(15);
 	}
@@ -21,6 +21,7 @@ public class Mage extends MainCharacter{
 	@Override
 	public void specialAbility() {
 		setAttack( getAttack() + 5);
+		System.out.println("El mago ha aumentado su ataque por 5 puntos");
 		
 	}
 }

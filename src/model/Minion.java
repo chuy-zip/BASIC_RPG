@@ -24,21 +24,21 @@ public class Minion extends MainCharacter{
 	public void specialAbility() {
 		int maxHP = this.getHP();
 		int currentHP = this.getCurrentHP();
-		int healingHP = 4;
+		int healingHP = 1;
 
 		/**
 		 * If the healing hp is less than the max hp, then aplie healing normally
 		 */
 		if(currentHP + healingHP < maxHP) {
 			this.setCurrentHP(currentHP + healingHP);
-			System.out.println("El minion se ha curado 4 puntos de vida por su habilidad especial");
+			System.out.println("\nEl minion se ha curado 1 puntos de vida por su habilidad especial\n");
 		}
 		/**
 		 * If the healing hp is going to be bigger than max HP, then set HP to MaxHP
 		 */
 		else if(currentHP + healingHP > maxHP){
 			this.setCurrentHP(maxHP);
-			System.out.println("El minion se ha curado 4 puntos de vida por su habilidad especial");
+			System.out.println("\nEl minion se ha curado 1 puntos de vida por su habilidad especial\n");
 
 		}
 		

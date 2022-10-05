@@ -27,7 +27,7 @@ public class HeroExplorer extends MainCharacter{
 	@Override
 	public void specialAbility() {
 		setGold(getGold() + 5);
-		System.out.println("Has ganado 5 monedas por tu habilidad especial");
+		System.out.println("\nHas ganado 5 monedas por tu habilidad especial\n");
 	}
 	
 	
