@@ -4,7 +4,11 @@ import java.util.ArrayList;
 
 import model.Items;
 import model.MainCharacter;
-
+/**
+ * Class that manages most of the game logic and events that can occur in a battle
+ * @author andre
+ *
+ */
 public class EventCombat {
 	private int turn; 
 	private boolean combatStatus;

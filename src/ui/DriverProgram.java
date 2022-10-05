@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import controler.EventCombat;
 import controler.Store;
+import model.Boss;
 import model.HeroExplorer;
 import model.HeroWarrior;
 import model.Mage;
@@ -277,7 +278,95 @@ public class DriverProgram {
 				
 			}
 			else if(action == 5) {
+				Enemies.add(new Boss("Final Boss"));
 				
+				System.out.println("Te enfrentas al jefe final!");
+				ShowHeroStats(Hero);
+				showEnemiesStats(Enemies);
+				int turn = 1;
+				EventCombat.setCombatStatus(true);
+				while(EventCombat.isCombatStatus()) {
+					/**
+					 * Al elegir la opcion de atacar empieza el combate por turnos
+					 */
+					if(turn == 1) {
+						
+						int battleOpt = battleMenu(sc);
+						/**
+						 * Esta la posibilidad de atacar o usar un item, la opcion 1 es para los items
+						 */
+						if(battleOpt == 1) {
+							
+							EventCombat.HeroAttack(Hero, Enemies, 0);
+							Hero.specialAbility();
+						}
+						
+						/**
+						 * La segunda opcion para el menu de ataque es utilizar un item
+						 */
+						else if (battleOpt == 2) {
+							int itemOption = ItemSelection(sc);
+							System.out.println(itemOption);
+							if(itemOption == 1) {
+								EventCombat.UseSelfitem(Hero, "Recovery Potion");
+							}
+							else if(itemOption == 2){
+								EventCombat.UseAtackItem(Hero, Enemies,"Dangerous Potion");
+							}
+						}
+						
+						/**
+						 * Revisar al final del turno del jugador si quedan enemigos
+						 */
+						EventCombat.deleteEnemies(Enemies, Hero);
+						System.out.println(Enemies.size());
+						if(Enemies.size() < 1) {
+							EventCombat.setCombatStatus(false);
+							System.out.println("Felicidades has vencido la jefe y has ganado!");
+							System.exit(0);
+						}
+						turn = 2;
+					}
+					/**
+					 * Para el turno del enemigo, se ataca por cada enemigo en el array
+					 */
+					else if(turn == 2) {
+						EventCombat.EnemyAttack(Enemies, Hero);
+						
+						/**
+						 * The special condition for this fight, is that having the shield unables the boss
+						 * to make his special ability
+						 */
+						if (Hero.getWeapons()[1] == null) {
+							for(int i = 0; i < Enemies.size(); i++) {
+								System.out.println("El jefe final subira su ataque a 9999 dentro de: " + 
+							((Boss)Enemies.get(i)).getFinalAtackCounter() + " turnos");
+								Enemies.get(i).specialAbility();
+							}
+						}
+						else {
+							System.out.println("El escudo mágico te protege de los ataques "
+									+ "devastadores y el jefe no puede cargar su ataque!");
+						}
+						
+						/**
+						 * Si la vida del jugaor llega a 0 se pierde el juego
+						 */
+						if(Hero.getCurrentHP() <= 0) {
+							System.out.println("GameOver, te has quedado sin puntos de salud");
+							EventCombat.setCombatStatus(false);
+							System.exit(0);
+							
+						}
+						
+						turn = 1;
+					}
+					/**
+					 * Mostrar las estadisticas luego de 1 turno
+					 */
+					ShowHeroStats(Hero);
+					showEnemiesStats(Enemies);
+				}	
 			}
 			
 		}
