@@ -107,7 +107,7 @@ public abstract class MainCharacter {
 	@Override
 	public String toString() {
 		
-		return "Nombre del heroe: " + getName() + "\nHP: " + getHP() + "\nPuntos de Ataque: " + getAttack() + "\nVelocidad: " + getSpeed() + "Oro: " + getGold();
+		return "Nombre del heroe: " + getName() + "\nHP: " + getCurrentHP() + " de: " + getHP() + "\nPuntos de Ataque: " + getAttack() + "\nVelocidad: " + getSpeed() + "\nOro: " + getGold();
 	}
 	
 } 

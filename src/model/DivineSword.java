@@ -10,7 +10,7 @@ public class DivineSword extends Equipment{
 	
 	public DivineSword(){
 		setBonusAttack(5);
-		setBonusSpeed(3);
+		setBonusSpeed(35);
 	}
 
 	@Override

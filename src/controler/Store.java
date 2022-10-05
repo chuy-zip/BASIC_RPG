@@ -1,7 +1,9 @@
 package controler;
 import model.Equipment;
+import model.HealthPot;
 import model.MainCharacter;
 import model.DivineSword;
+import model.DmgPot;
 import model.MagicShield;
 
 /**
@@ -24,23 +26,51 @@ public class Store {
 		int SpeedIncrese = 5;
 		hero.setHP(hero.getHP() + HpIncrese);
 		hero.setSpeed(hero.getSpeed() + SpeedIncrese);
+		
+		hero.setGold(hero.getGold() - 35);
 	}
 	
 	public void buyStrengthElixir(MainCharacter hero){
-		int AttckIncrese = 5;
+		int AttckIncrese = 7;
 		hero.setAttack(hero.getAttack() + AttckIncrese);
+		
+		hero.setGold(hero.getGold() - 35);
+		
+	}
+	
+	public void buyHealthPot(MainCharacter hero){
+		hero.getInventory().add(new HealthPot());
+		
+		hero.setGold(hero.getGold() - 20);
+	}
+	
+	public void buyDmgPot(MainCharacter hero){
+		hero.getInventory().add(new DmgPot());
+		
+		hero.setGold(hero.getGold() - 50);
 	}
 	
 	public void buyShield(MainCharacter hero){
 		if(hero.getWeapons()[0] != this.DivineSword) {
 			hero.getWeapons()[0] = this.DivineSword;
+			hero.setGold(hero.getGold() - 300);
 		}
 	}
 	
 	public void buySword(MainCharacter hero){
 		if(hero.getWeapons()[1] != this.MagicShield) {
 			hero.getWeapons()[1] = this.MagicShield;
+			hero.setGold(hero.getGold() - 200);
 		}
+	}
+	
+	public boolean canBuyItem(MainCharacter hero, int ItemCost) {
+		if(hero.getGold() - ItemCost >= 0) {
+			return true;
+		}
+		else {
+			return false;
+		}	
 	}
 	
 }
