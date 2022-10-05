@@ -30,7 +30,7 @@ public class EventCombat {
 	public void EnemyAttack(ArrayList<MainCharacter> enemies, MainCharacter hero) {
 		for(MainCharacter anEnemy:enemies) {
 			hero.setCurrentHP(hero.getCurrentHP() - anEnemy.getAttack());
-			System.out.println("\nEnemigo ha atacado_________________________________________________");
+			System.out.println("\nEnemigo ha atacado_________________________________________________________________________");
 		}
 	}
 	/**
@@ -80,7 +80,11 @@ public class EventCombat {
 	public void setCombatStatus(boolean combatStatus) {
 		this.combatStatus = combatStatus;
 	}
-	
+	/**
+	 * Delete enemies when theirhp is equal or below to 0
+	 * @param enemies
+	 * @param Hero
+	 */
 	public void deleteEnemies(ArrayList<MainCharacter> enemies, MainCharacter Hero) {
 		if(enemies.size() == 2) {
 			if(enemies.get(1).getCurrentHP() <= 0) {

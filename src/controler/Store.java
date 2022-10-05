@@ -8,8 +8,9 @@ import model.MagicShield;
 
 /**
  * A class for the item shop. Elixirs have permanent effects, but consumable items and 
- * the avaialable weapons in the game can also be purchased in the shop
- * @author andre
+ * the avaialable weapons in the game can also be purchased in the shop. Each method represents
+ * an item that can be purchased
+ * @author Ricardo Chuy
  *
  */
 public class Store {

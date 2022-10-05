@@ -10,10 +10,10 @@ public class HeroWarrior extends MainCharacter{
 	public HeroWarrior(String name) {
 		super(name);
 		setHeroType(0);
-		setHP(9000);
-		setCurrentHP(9000);
-		setGold(1000);
-		setAttack(6000);
+		setHP(16);
+		setCurrentHP(16);
+		setGold(0);
+		setAttack(6);
 		setSpeed(1);
 		
 		getInventory().add(new HealthPot());
