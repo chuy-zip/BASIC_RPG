@@ -104,6 +104,10 @@ public abstract class MainCharacter {
 		this.currentHP = currentHP;
 	}
 	
-	
+	@Override
+	public String toString() {
+		
+		return "Nombre del heroe: " + getName() + "\nHP: " + getHP() + "\nPuntos de Ataque: " + getAttack() + "\nVelocidad: " + getSpeed() + "Oro: " + getGold();
+	}
 	
 } 
