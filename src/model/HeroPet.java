@@ -19,17 +19,20 @@ public class HeroPet extends MainCharacter{
 	@Override
 	public void specialAbility() {
 		if(getCurrentHP() < 0) {
+			System.out.println("Tu mascota se ha debilitado");
 			setThrowable(true);
 			setReviveCounter(getReviveCounter() - 1);
 			
 			if(getReviveCounter() <= 0) {
 				setCurrentHP(50);
+				setReviveCounter(2);
+				setThrowable(false);
 				System.out.println("Luego de descansar unos turnos tu mascota se a recuperado!");
 				
 			}
+			
 		}
-		
-		System.out.println("Tu mascota se ha debilitado");
+
 	}
 
 	public boolean isThrowable() {
