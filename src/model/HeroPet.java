@@ -11,7 +11,7 @@ public class HeroPet extends MainCharacter{
 		setHP(50);
 		setCurrentHP(50);
 		setGold(0);
-		setAttack(30);
+		setAttack(40);
 		setSpeed(1);
 		setReviveCounter(3);
 	}

@@ -393,8 +393,13 @@ public class DriverProgram {
 				
 				System.out.println("Y a este lo siguen: " + EnemiesQty + " Mago(s) +");
 				
-				
 				ShowHeroStats(Hero);
+				
+				//Checking if the user has a pet
+				if(Assistant != null) {
+					ShowHeroStats(Assistant);
+				}
+				
 				showEnemiesStats(Enemies);
 				int turn = 1;
 				EventCombat.setCombatStatus(true);
@@ -404,14 +409,39 @@ public class DriverProgram {
 					 */
 					if(turn == 1) {
 						
-						int battleOpt = battleMenu(sc);
+						int battleOpt = RaidbattleMenu(sc);
 						/**
-						 * Esta la posibilidad de atacar o usar un item, la opcion 1 es para los items
+						 * Esta la posibilidad de atacar o usar un item, la opcion 1 es para los atacques
 						 */
 						if(battleOpt == 1) {
 							
-							EventCombat.HeroAttack(Hero, Enemies, 0);
-							Hero.specialAbility();
+							int target = targetAtack(sc);
+							
+							/**
+							 * Esta condicion es para poder saber cual es el objetivo a atacar
+							 */
+							if(target == 1) {
+								EventCombat.HeroAttack(Hero, Enemies, 0);
+								Hero.specialAbility();
+							}
+							
+							/**
+							 * Solo será valido elegir a un segundo objetivo si hay 2 objetivos
+							 */
+							else if(target == 2 && Enemies.size() == 2) {
+								EventCombat.HeroAttack(Hero, Enemies, 1);
+								Hero.specialAbility();
+							}
+							
+							/**
+							 * Solo será valido elegir a un segundo objetivo si hay 2 objetivos
+							 */
+							
+							else if(target == 3 && Enemies.size() == 3) {
+								EventCombat.HeroAttack(Hero, Enemies, 2);
+								Hero.specialAbility();
+							}
+							
 						}
 						
 						/**
@@ -427,6 +457,20 @@ public class DriverProgram {
 								EventCombat.UseAtackItem(Hero, Enemies,"Dangerous Potion");
 							}
 						}
+						
+						else if (battleOpt == 3) {
+							
+						}
+						
+						else if (battleOpt == 4) {
+							
+						}
+						
+						else if (battleOpt == 5) {
+							
+						}
+						
+						
 						
 						/**
 						 * Revisar al final del turno del jugador si quedan enemigos
@@ -522,8 +566,6 @@ public class DriverProgram {
 			else if(heroClass == 3){
 				hero =  new HeroHunter(heroName);
 				
-				
-				
 				System.out.println("Todo Listo cazador, tu aventura comienza ahora!");
 				return hero;
 			}
@@ -603,8 +645,17 @@ public class DriverProgram {
 	//Specefic elements for ui in raid Battles
 	private static void Instructions() {
 		System.out.println("**************************************************************************************************************************************************************");
-		System.out.println("BIenvenido a las Raid Battles, aque te encontraras con un jefe formidable que puede venir acompañado por 1 o mas enemigos"
+		System.out.println("Bienvenido a las Raid Battles, aque te encontraras con un jefe formidable que puede venir acompañado por 1 o mas enemigos"
 				+ "\nLos cazadores tienen la posibilidad de poder usar mascotas en esta area, pero si no tienes una..... bueno te deseamos suerte :)");
 		
+	}
+	
+	private static int RaidbattleMenu(Scanner scan) {
+		System.out.println("\nSelect the action you want to do");
+		System.out.println("1. Atacar          2. Utilizar un item \n" + 
+							"\n3. Sanar Mascota    4. Ataque Mascota al (Da Prioridad al jefe)\n"
+							+"\n5. Lanzar Mascota :o (Da Prioridad al jefe)");
+		int Choice = Integer.parseInt(scan.next());
+		return Choice;
 	}
 }
