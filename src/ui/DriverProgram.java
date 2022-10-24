@@ -385,7 +385,8 @@ public class DriverProgram {
 		System.out.println("Estas por enfrentarte a peligrosos enemigos y salvar al mundo");
 		System.out.println("Que tipo de guerrero te gustaria ser:\n" + 
 							"1. Un guerrero, con mayor fuerza y puntos de salud\n" +
-							"2. Un aventurero, que posee mayor oro y objetos al comienzo");
+							"2. Un aventurero, que posee mayor oro y objetos al comienzo"+
+							"3. Un Cazador, Muy poco poder de ataque pero gran vida y podrás tener una mascota para los Raids");
 		
 		int heroClass = Integer.parseInt(scan.next());
 		
@@ -434,7 +435,8 @@ public class DriverProgram {
 							"2. Ver las stats (Incluyendo los items disponibles)\n" + 
 							"3. Abrir la tienda\n" +
 							"4. Luchar contra un enemigo fuerte\n"+
-							"5. Luchar contra el jefe final\n" );
+							"5. Luchar contra el jefe final\n"+ 
+							"6. Participar en un Raid");
 		int Choice = Integer.parseInt(scan.next()); 
 		return Choice;
 	}
