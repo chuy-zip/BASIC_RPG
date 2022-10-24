@@ -7,6 +7,7 @@ import controler.EventCombat;
 import controler.Store;
 import model.Boss;
 import model.HeroExplorer;
+import model.HeroHunter;
 import model.HeroWarrior;
 import model.Mage;
 import model.MainCharacter;
@@ -402,6 +403,15 @@ public class DriverProgram {
 			
 			else if(heroClass == 2){
 				hero =  new HeroExplorer(heroName);
+				System.out.println("Todo Listo aventurero, tu aventura comienza ahora!");
+				return hero;
+			}
+			
+			else if(heroClass == 3){
+				hero =  new HeroHunter(heroName);
+				
+				
+				
 				System.out.println("Todo Listo aventurero, tu aventura comienza ahora!");
 				return hero;
 			}
