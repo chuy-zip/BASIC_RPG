@@ -3,13 +3,14 @@ package model;
 public class HeroPet extends MainCharacter{
 
 	private boolean Throwable;
+	private boolean defending;
 	private int ReviveCounter;
 	
 	public HeroPet(String name) {
 		super(name);
 		setHeroType(6);
-		setHP(50);
-		setCurrentHP(50);
+		setHP(200);
+		setCurrentHP(200);
 		setGold(0);
 		setAttack(40);
 		setSpeed(1);
@@ -49,6 +50,14 @@ public class HeroPet extends MainCharacter{
 
 	public void setReviveCounter(int reviveCounter) {
 		ReviveCounter = reviveCounter;
+	}
+
+	public boolean isDefending() {
+		return defending;
+	}
+
+	public void setDefending(boolean defending) {
+		this.defending = defending;
 	}
 	
 	

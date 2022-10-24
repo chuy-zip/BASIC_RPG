@@ -2,6 +2,7 @@ package controler;
 
 import java.util.ArrayList;
 
+import model.HeroPet;
 import model.Items;
 import model.MainCharacter;
 /**
@@ -43,7 +44,20 @@ public class EventCombat {
 		for(int i = 0; i < Hero.getInventory().size(); i++) {
 			if(Hero.getInventory().get(i).getName().equals(ItemName) ) {
 				Hero.getInventory().get(i).AppplyPotionEffect(Hero);
-				System.out.println("cura");
+				System.out.println("Curacion exitosa");
+				Hero.getInventory().remove(i);
+				return;
+			}
+		}
+		System.out.println("No esta disponible el item");
+	}
+	
+	public void UseHealItemOnPet(MainCharacter Hero, String ItemName, HeroPet pet) {
+		
+		for(int i = 0; i < Hero.getInventory().size(); i++) {
+			if(Hero.getInventory().get(i).getName().equals(ItemName) ) {
+				Hero.getInventory().get(i).AppplyPotionEffect(pet);
+				System.out.println("Curacion exitosa");
 				Hero.getInventory().remove(i);
 				return;
 			}

@@ -409,11 +409,11 @@ public class DriverProgram {
 					 */
 					if(turn == 1) {
 						
-						int battleOpt = RaidbattleMenu(sc);
+						int RaidbattleOpt = RaidbattleMenu(sc);
 						/**
 						 * Esta la posibilidad de atacar o usar un item, la opcion 1 es para los atacques
 						 */
-						if(battleOpt == 1) {
+						if(RaidbattleOpt == 1) {
 							
 							int target = targetAtack(sc);
 							
@@ -426,7 +426,7 @@ public class DriverProgram {
 							}
 							
 							/**
-							 * Solo será valido elegir a un segundo objetivo si hay 2 objetivos
+							 * Solo sera valido elegir a un segundo objetivo si hay 2 objetivos
 							 */
 							else if(target == 2 && Enemies.size() == 2) {
 								EventCombat.HeroAttack(Hero, Enemies, 1);
@@ -434,7 +434,7 @@ public class DriverProgram {
 							}
 							
 							/**
-							 * Solo será valido elegir a un segundo objetivo si hay 2 objetivos
+							 * Solo sera valido elegir a un segundo objetivo si hay 3 objetivos
 							 */
 							
 							else if(target == 3 && Enemies.size() == 3) {
@@ -447,7 +447,7 @@ public class DriverProgram {
 						/**
 						 * La segunda opcion para el menu de ataque es utilizar un item
 						 */
-						else if (battleOpt == 2) {
+						else if (RaidbattleOpt == 2) {
 							int itemOption = ItemSelection(sc);
 							System.out.println(itemOption);
 							if(itemOption == 1) {
@@ -458,28 +458,58 @@ public class DriverProgram {
 							}
 						}
 						
-						else if (battleOpt == 3) {
-							
+						/*
+						 * Opcion de curar mascota
+						 */
+						else if (RaidbattleOpt == 3) {
+							if(Assistant != null) {
+								EventCombat.UseHealItemOnPet(Hero, "Recovery Potion", Assistant);
+								
+							}
+							else {
+								System.out.println("No tienes una mascota para realizar esta habilidad");
+							}
 						}
 						
-						else if (battleOpt == 4) {
-							
+						else if (RaidbattleOpt == 4) {
+							if(Assistant != null) {
+								EventCombat.HeroAttack(Assistant, Enemies, 0);
+								
+							}
+							else {
+								System.out.println("No tienes una mascota para realizar esta habilidad");
+							}
 						}
 						
-						else if (battleOpt == 5) {
-							
+						else if (RaidbattleOpt == 5) {
+							if(Assistant != null) {
+								System.out.println(Assistant.getName() + "se para frente a ti y se dispone a protegerte hasta el fin");
+								
+							}
+							else {
+								System.out.println("No tienes una mascota para realizar esta habilidad");
+							}
 						}
 						
+						else if (RaidbattleOpt == 6) {
+							if(Assistant != null) {
+								System.out.println(Assistant.getName() + "se para frente a ti y se dispone a protegerte hasta el fin");
+								
+							}
+							else {
+								System.out.println("No tienes una mascota para realizar esta habilidad");
+							}
+						}
 						
 						
 						/**
 						 * Revisar al final del turno del jugador si quedan enemigos
 						 */
 						EventCombat.deleteEnemies(Enemies, Hero);
-						System.out.println(Enemies.size());
+						System.out.println("Quedan" + Enemies.size() + "Enemigo(s)");
 						if(Enemies.size() < 1) {
 							EventCombat.setCombatStatus(false);
-							System.out.println("Felicidades has vencido la jefe y has ganado!");
+							System.out.println("Felicidades has vencido el raid y completado el desafió, Gracias por jugar!");
 							System.exit(0);
 						}
 						turn = 2;
@@ -488,24 +518,35 @@ public class DriverProgram {
 					 * Para el turno del enemigo, se ataca por cada enemigo en el array
 					 */
 					else if(turn == 2) {
-						EventCombat.EnemyAttack(Enemies, Hero);
 						
-						/**
-						 * The special condition for this fight, is that having the shield unables the boss
-						 * to make his special ability
+						/*
+						 * Verificacion var saber cual sera el objetivo, caso en el que defiende la mascota
 						 */
-						if (Hero.getWeapons()[1] == null) {
+						if(Assistant != null && Assistant.isDefending()) {
+							EventCombat.EnemyAttack(Enemies, Assistant);
 							for(int i = 0; i < Enemies.size(); i++) {
-								System.out.println("El jefe final subira su ataque a 9999 dentro de: " + 
-							((Boss)Enemies.get(i)).getFinalAtackCounter() + " turnos");
-								Enemies.get(i).specialAbility();
+								//Si el que esta atacando es el jefe final
+								if(Enemies.get(i).getHeroType() == 7) {
+									
+									Enemies.get(i).specialAbility();
+									// Y si su habilidad al azar espcial es clonar a la mascota si esta existe
+									if(((ExtraBoss) Enemies.get(i)).getAbilityNumber() == 3 && Assistant != null) {
+										((ExtraBoss) Enemies.get(i)).cloneHeroPet(Assistant);
+									}
+								}
+								else {
+									Enemies.get(i).specialAbility();
+								}
+								
+							}
+							
+						}
+						
+						else {
+							for(int i = 0; i < Enemies.size(); i++) {
+								EventCombat.EnemyAttack(Enemies, Assistant);
 							}
 						}
-						else {
-							System.out.println("El escudo mágico te protege de los ataques "
-									+ "devastadores y el jefe no puede cargar su ataque!");
-						}
-						
 						/**
 						 * Si la vida del jugaor llega a 0 se pierde el juego
 						 */
@@ -522,6 +563,10 @@ public class DriverProgram {
 					 * Mostrar las estadisticas luego de 1 turno
 					 */
 					ShowHeroStats(Hero);
+					//Checking if the user has a pet
+					if(Assistant != null) {
+						ShowHeroStats(Assistant);
+					}
 					showEnemiesStats(Enemies);
 				}	
 			}
@@ -654,8 +699,10 @@ public class DriverProgram {
 		System.out.println("\nSelect the action you want to do");
 		System.out.println("1. Atacar          2. Utilizar un item \n" + 
 							"\n3. Sanar Mascota    4. Ataque Mascota al (Da Prioridad al jefe)\n"
-							+"\n5. Lanzar Mascota :o (Da Prioridad al jefe)");
+							+"\n5. Proteccion de Mascota    6. Lanzar Mascota :o (Da Prioridad al jefe)");
 		int Choice = Integer.parseInt(scan.next());
 		return Choice;
 	}
+	
+	
 }
