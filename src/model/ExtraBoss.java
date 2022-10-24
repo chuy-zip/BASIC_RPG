@@ -27,19 +27,20 @@ public class ExtraBoss extends MainCharacter{
 		
 		if(getAbilityNumber() == 1) {
 			setAttack(getAttack() + 10);
-			System.out.println("Pesadilla: El rey de las sombras ha mejorado su ataque con una de sus abilidades");
+			System.out.println(getName() + " ha mejorado su ataque con una de sus abilidades");
 		}
 		
 		else if(getAbilityNumber() == 2){
 			setCurrentHP(getCurrentHP() + 50);
-			System.out.println("Pesadilla: El rey de las sombras se ha curado 50 puntos de vida con una de sus abilidades");
+			System.out.println(getName() + " se ha curado 50 puntos de vida con una de sus abilidades");
 		}
 		
 	}
 
 	public void cloneHeroPet(MainCharacter heroPet) {
 		Clone = new HeroPet(heroPet.getName());
-		System.out.println("Pesadilla a clonadoa " + heroPet.getName());
+		System.out.println(getName() + "Pesadilla a clonadoa " + heroPet.getName());
+		
 	}
 	
 	public int getCloneTimer() {

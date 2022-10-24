@@ -6,8 +6,10 @@ import java.util.Scanner;
 import controler.EventCombat;
 import controler.Store;
 import model.Boss;
+import model.ExtraBoss;
 import model.HeroExplorer;
 import model.HeroHunter;
+import model.HeroPet;
 import model.HeroWarrior;
 import model.Mage;
 import model.MainCharacter;
@@ -21,9 +23,16 @@ public class DriverProgram {
 		Store GameStore = new Store();
 		EventCombat EventCombat = new EventCombat();
 		ArrayList<MainCharacter> Enemies = new ArrayList<MainCharacter>(); 
+		HeroPet Assistant;
 		
 		Scanner sc = new Scanner(System.in);
+		Assistant = null;
 		Hero = CreateNewHero(sc);
+		if(Hero.getHeroType() == 5) {
+			System.out.println("Cual es el nombre de tu fiel mascota dragon");
+			String PetName = sc.next();
+			Assistant = new HeroPet(PetName);
+		}
 		ShowHeroStats(Hero);
 		
 		while(true) {
@@ -369,6 +378,109 @@ public class DriverProgram {
 					showEnemiesStats(Enemies);
 				}	
 			}
+			/////////////////////////////////////////////////////////////////////////////////
+			else if(action == 6) {
+				ExtraBoss RaidBoss = new ExtraBoss("Pesadilla: Rey de las sombras");
+				
+				Enemies.add(RaidBoss);
+				Instructions();
+				
+				int EnemiesQty = (int) ( Math.random() * 2 + 1);
+				for(int i = 0; i < EnemiesQty ; i++) {
+					Enemies.add(new Mage("Mago+"));
+				}
+				System.out.println("Te enfrentas a: " + RaidBoss.getName());
+				
+				System.out.println("Y a este lo siguen: " + EnemiesQty + " Mago(s) +");
+				
+				
+				ShowHeroStats(Hero);
+				showEnemiesStats(Enemies);
+				int turn = 1;
+				EventCombat.setCombatStatus(true);
+				while(EventCombat.isCombatStatus()) {
+					/**
+					 * Al elegir la opcion de atacar empieza el combate por turnos
+					 */
+					if(turn == 1) {
+						
+						int battleOpt = battleMenu(sc);
+						/**
+						 * Esta la posibilidad de atacar o usar un item, la opcion 1 es para los items
+						 */
+						if(battleOpt == 1) {
+							
+							EventCombat.HeroAttack(Hero, Enemies, 0);
+							Hero.specialAbility();
+						}
+						
+						/**
+						 * La segunda opcion para el menu de ataque es utilizar un item
+						 */
+						else if (battleOpt == 2) {
+							int itemOption = ItemSelection(sc);
+							System.out.println(itemOption);
+							if(itemOption == 1) {
+								EventCombat.UseSelfitem(Hero, "Recovery Potion");
+							}
+							else if(itemOption == 2){
+								EventCombat.UseAtackItem(Hero, Enemies,"Dangerous Potion");
+							}
+						}
+						
+						/**
+						 * Revisar al final del turno del jugador si quedan enemigos
+						 */
+						EventCombat.deleteEnemies(Enemies, Hero);
+						System.out.println(Enemies.size());
+						if(Enemies.size() < 1) {
+							EventCombat.setCombatStatus(false);
+							System.out.println("Felicidades has vencido la jefe y has ganado!");
+							System.exit(0);
+						}
+						turn = 2;
+					}
+					/**
+					 * Para el turno del enemigo, se ataca por cada enemigo en el array
+					 */
+					else if(turn == 2) {
+						EventCombat.EnemyAttack(Enemies, Hero);
+						
+						/**
+						 * The special condition for this fight, is that having the shield unables the boss
+						 * to make his special ability
+						 */
+						if (Hero.getWeapons()[1] == null) {
+							for(int i = 0; i < Enemies.size(); i++) {
+								System.out.println("El jefe final subira su ataque a 9999 dentro de: " + 
+							((Boss)Enemies.get(i)).getFinalAtackCounter() + " turnos");
+								Enemies.get(i).specialAbility();
+							}
+						}
+						else {
+							System.out.println("El escudo mágico te protege de los ataques "
+									+ "devastadores y el jefe no puede cargar su ataque!");
+						}
+						
+						/**
+						 * Si la vida del jugaor llega a 0 se pierde el juego
+						 */
+						if(Hero.getCurrentHP() <= 0) {
+							System.out.println("GameOver, te has quedado sin puntos de salud");
+							EventCombat.setCombatStatus(false);
+							System.exit(0);
+							
+						}
+						
+						turn = 1;
+					}
+					/**
+					 * Mostrar las estadisticas luego de 1 turno
+					 */
+					ShowHeroStats(Hero);
+					showEnemiesStats(Enemies);
+				}	
+			}
 			
 		}
 			
@@ -386,7 +498,7 @@ public class DriverProgram {
 		System.out.println("Estas por enfrentarte a peligrosos enemigos y salvar al mundo");
 		System.out.println("Que tipo de guerrero te gustaria ser:\n" + 
 							"1. Un guerrero, con mayor fuerza y puntos de salud\n" +
-							"2. Un aventurero, que posee mayor oro y objetos al comienzo"+
+							"2. Un aventurero, que posee mayor oro y objetos al comienzo\n"+
 							"3. Un Cazador, Muy poco poder de ataque pero gran vida y podrás tener una mascota para los Raids");
 		
 		int heroClass = Integer.parseInt(scan.next());
@@ -412,7 +524,7 @@ public class DriverProgram {
 				
 				
 				
-				System.out.println("Todo Listo aventurero, tu aventura comienza ahora!");
+				System.out.println("Todo Listo cazador, tu aventura comienza ahora!");
 				return hero;
 			}
 		}
@@ -487,4 +599,12 @@ public class DriverProgram {
 		return choiceItem;
 	}
 	
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	//Specefic elements for ui in raid Battles
+	private static void Instructions() {
+		System.out.println("**************************************************************************************************************************************************************");
+		System.out.println("BIenvenido a las Raid Battles, aque te encontraras con un jefe formidable que puede venir acompañado por 1 o mas enemigos"
+				+ "\nLos cazadores tienen la posibilidad de poder usar mascotas en esta area, pero si no tienes una..... bueno te deseamos suerte :)");
+		
+	}
 }
