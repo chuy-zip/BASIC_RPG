@@ -473,6 +473,7 @@ public class DriverProgram {
 						
 						else if (RaidbattleOpt == 4) {
 							if(Assistant != null) {
+								System.out.println("Han atacado al enemigo principal por:" + Assistant.getAttack());
 								EventCombat.HeroAttack(Assistant, Enemies, 0);
 								
 							}
@@ -482,25 +483,25 @@ public class DriverProgram {
 						}
 						
 						else if (RaidbattleOpt == 5) {
-							if(Assistant != null) {
+							if(Assistant != null && Assistant.getCurrentHP() > 0) {
 								Assistant.setDefending(true);
 								System.out.println(Assistant.getName() + " se para frente a ti y se dispone a protegerte hasta el fin");
 								
 							}
 							else {
-								System.out.println("No tienes una mascota para realizar esta habilidad");
+								System.out.println("No tienes una mascota disponible por el momento para hacer la accion");
 							}
 						}
 						
 						else if (RaidbattleOpt == 6) {
 							if(Assistant != null && Assistant.isThrowable()) {
 								EventCombat.HeroAttack(Assistant, Enemies, 0);
-								System.out.println(Assistant.getName() + "En un intento desesperado haz lanzado a tu querida mascota para atacar");
+								System.out.println("En un intento desesperado haz lanzado a tu querida mascota" + Assistant.getName() +"para atacar");
 								
 							}
 							else {
 								System.out.println("Al intentar lanzar a tu mascota te ha visto con una mirada preocupante, pierdes el turno"
-										+ "Tal vez cuando este noqueado....");
+										+ " Tal vez cuando este noqueado....");
 							}
 						}
 						
@@ -509,7 +510,7 @@ public class DriverProgram {
 						 * Revisar al final del turno del jugador si quedan enemigos
 						 */
 						EventCombat.deleteEnemies(Enemies, Hero);
-						System.out.println("Quedan" + Enemies.size() + "Enemigo(s)");
+						System.out.println("Quedan " + Enemies.size() + " Enemigo(s)");
 						if(Enemies.size() < 1) {
 							EventCombat.setCombatStatus(false);
 							System.out.println("Felicidades has vencido el raid y completado el desafió, Gracias por jugar!");
@@ -574,17 +575,20 @@ public class DriverProgram {
 							Assistant.setDefending(false);
 							Assistant.specialAbility();
 						}
+						
+						/**
+						 * Mostrar las estadisticas luego del turno 2
+						 */
+						ShowHeroStats(Hero);
+						//Checking if the user has a pet
+						if(Assistant != null) {
+							ShowHeroStats(Assistant);
+						}
+						showEnemiesStats(Enemies);
+						
 						turn = 1;
 					}
-					/**
-					 * Mostrar las estadisticas luego de 1 turno
-					 */
-					ShowHeroStats(Hero);
-					//Checking if the user has a pet
-					if(Assistant != null) {
-						ShowHeroStats(Assistant);
-					}
-					showEnemiesStats(Enemies);
+					
 				}	
 			}
 			

@@ -24,6 +24,7 @@ public class ExtraBoss extends MainCharacter{
 	@Override
 	public void specialAbility() {
 		setAbilityNumber((int) ( Math.random() * 3 + 1)) ;
+		System.out.println(getAbilityNumber());
 		
 		if(getAbilityNumber() == 1) {
 			setAttack(getAttack() + 10);
