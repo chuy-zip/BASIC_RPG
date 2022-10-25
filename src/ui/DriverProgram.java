@@ -483,7 +483,8 @@ public class DriverProgram {
 						
 						else if (RaidbattleOpt == 5) {
 							if(Assistant != null) {
-								System.out.println(Assistant.getName() + "se para frente a ti y se dispone a protegerte hasta el fin");
+								Assistant.setDefending(true);
+								System.out.println(Assistant.getName() + " se para frente a ti y se dispone a protegerte hasta el fin");
 								
 							}
 							else {
@@ -492,12 +493,14 @@ public class DriverProgram {
 						}
 						
 						else if (RaidbattleOpt == 6) {
-							if(Assistant != null) {
-								System.out.println(Assistant.getName() + "se para frente a ti y se dispone a protegerte hasta el fin");
+							if(Assistant != null && Assistant.isThrowable()) {
+								EventCombat.HeroAttack(Assistant, Enemies, 0);
+								System.out.println(Assistant.getName() + "En un intento desesperado haz lanzado a tu querida mascota para atacar");
 								
 							}
 							else {
-								System.out.println("No tienes una mascota para realizar esta habilidad");
+								System.out.println("Al intentar lanzar a tu mascota te ha visto con una mirada preocupante, pierdes el turno"
+										+ "Tal vez cuando este noqueado....");
 							}
 						}
 						
@@ -512,6 +515,8 @@ public class DriverProgram {
 							System.out.println("Felicidades has vencido el raid y completado el desafió, Gracias por jugar!");
 							System.exit(0);
 						}
+						System.out.println("Fin de tu turno__________________________________________________________________________________________________");
+						
 						turn = 2;
 					}
 					/**
@@ -543,8 +548,16 @@ public class DriverProgram {
 						}
 						
 						else {
+							EventCombat.EnemyAttack(Enemies, Hero);
 							for(int i = 0; i < Enemies.size(); i++) {
-								EventCombat.EnemyAttack(Enemies, Assistant);
+								if(Enemies.get(i).getHeroType() == 7) {
+									
+									Enemies.get(i).specialAbility();
+									// Y si su habilidad al azar espcial es clonar a la mascota si esta existe
+									if(((ExtraBoss) Enemies.get(i)).getAbilityNumber() == 3 && Assistant != null) {
+										((ExtraBoss) Enemies.get(i)).cloneHeroPet(Assistant);
+									}
+								}
 							}
 						}
 						/**
@@ -556,7 +569,11 @@ public class DriverProgram {
 							System.exit(0);
 							
 						}
-						
+						//The abilities of the pet are triggered at the end of all turns
+						if(Assistant != null) {
+							Assistant.setDefending(false);
+							Assistant.specialAbility();
+						}
 						turn = 1;
 					}
 					/**

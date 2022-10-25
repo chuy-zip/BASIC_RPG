@@ -6,7 +6,7 @@ public class HeroHunter extends MainCharacter{
 		super(name);
 		setHeroType(5);
 		setHP(35);
-		setCurrentHP(35);
+		setCurrentHP(9000);
 		setGold(0);
 		setAttack(2);
 		setSpeed(1);
