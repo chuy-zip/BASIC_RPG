@@ -31,7 +31,13 @@ public class ExtraBoss extends MainCharacter{
 		}
 		
 		else if(getAbilityNumber() == 2){
-			setCurrentHP(getCurrentHP() + 50);
+			if(getCurrentHP() + 50 > getHP()) {
+				setCurrentHP(500);
+			}
+			else {
+				setCurrentHP(getCurrentHP() + 50);
+			}
+			
 			System.out.println(getName() + " se ha curado 50 puntos de vida con una de sus abilidades");
 		}
 		

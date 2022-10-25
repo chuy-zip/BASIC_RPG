@@ -475,16 +475,16 @@ public class DriverProgram {
 						}
 						
 						/*
-						 * Opcion para comnar un ataque con la mascota
+						 * Opcion para comandar un ataque con la mascota, si esta existe y no esta noqueada
 						 */
 						else if (RaidbattleOpt == 4) {
-							if(Assistant != null) {
+							if(Assistant != null && !Assistant.isThrowable()) {
 								System.out.println("Han atacado al enemigo principal por:" + Assistant.getAttack());
 								EventCombat.HeroAttack(Assistant, Enemies, 0);
 								
 							}
 							else {
-								System.out.println("No tienes una mascota para realizar esta habilidad");
+								System.out.println("No tienes una mascota disponible en este momento para realizar esta habilidad");
 							}
 						}
 						
