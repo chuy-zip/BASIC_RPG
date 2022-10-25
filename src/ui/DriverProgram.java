@@ -380,7 +380,7 @@ public class DriverProgram {
 			}
 			/////////////////////////////////////////////////////////////////////////////////
 			else if(action == 6) {
-				ExtraBoss RaidBoss = new ExtraBoss("Pesadilla: Rey de las sombras");
+				ExtraBoss RaidBoss = new ExtraBoss("Pesadilla, Rey de las sombras");
 				
 				Enemies.add(RaidBoss);
 				Instructions();
@@ -415,7 +415,7 @@ public class DriverProgram {
 						 */
 						if(RaidbattleOpt == 1) {
 							
-							int target = targetAtack(sc);
+							int target = RaidtargetAtack(sc);
 							
 							/**
 							 * Esta condicion es para poder saber cual es el objetivo a atacar
@@ -423,6 +423,7 @@ public class DriverProgram {
 							if(target == 1) {
 								EventCombat.HeroAttack(Hero, Enemies, 0);
 								Hero.specialAbility();
+								System.out.println("Has atacado al enemigo 1\n");
 							}
 							
 							/**
@@ -431,6 +432,7 @@ public class DriverProgram {
 							else if(target == 2 && Enemies.size() == 2) {
 								EventCombat.HeroAttack(Hero, Enemies, 1);
 								Hero.specialAbility();
+								System.out.println("Has atacado al enemigo 2\n");
 							}
 							
 							/**
@@ -440,6 +442,7 @@ public class DriverProgram {
 							else if(target == 3 && Enemies.size() == 3) {
 								EventCombat.HeroAttack(Hero, Enemies, 2);
 								Hero.specialAbility();
+								System.out.println("Has atacado al enemigo 3\n");
 							}
 							
 						}
@@ -538,6 +541,7 @@ public class DriverProgram {
 									// Y si su habilidad al azar espcial es clonar a la mascota si esta existe
 									if(((ExtraBoss) Enemies.get(i)).getAbilityNumber() == 3 && Assistant != null) {
 										((ExtraBoss) Enemies.get(i)).cloneHeroPet(Assistant);
+										Hero.setCurrentHP(Hero.getCurrentHP() - Assistant.getAttack());
 									}
 								}
 								else {
@@ -557,6 +561,7 @@ public class DriverProgram {
 									// Y si su habilidad al azar espcial es clonar a la mascota si esta existe
 									if(((ExtraBoss) Enemies.get(i)).getAbilityNumber() == 3 && Assistant != null) {
 										((ExtraBoss) Enemies.get(i)).cloneHeroPet(Assistant);
+										Hero.setCurrentHP(Hero.getCurrentHP() - Assistant.getAttack());
 									}
 								}
 							}
@@ -719,11 +724,16 @@ public class DriverProgram {
 	private static int RaidbattleMenu(Scanner scan) {
 		System.out.println("\nSelect the action you want to do");
 		System.out.println("1. Atacar          2. Utilizar un item \n" + 
-							"\n3. Sanar Mascota    4. Ataque Mascota al (Da Prioridad al jefe)\n"
+							"\n3. Sanar Mascota    4. Ataque Mascota (Da Prioridad al jefe)\n"
 							+"\n5. Proteccion de Mascota    6. Lanzar Mascota :o (Da Prioridad al jefe)");
 		int Choice = Integer.parseInt(scan.next());
 		return Choice;
 	}
 	
-	
+	private static int RaidtargetAtack(Scanner scan) {
+		System.out.println("Desea atacar al objetivo 1, 2, o 3 (No ocurrirra nada si eliges un enemigo que ya fue derrotado)");
+		int choice = Integer.parseInt(scan.next());
+		
+		return choice;
+	}
 }
