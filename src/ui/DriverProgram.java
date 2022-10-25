@@ -462,7 +462,7 @@ public class DriverProgram {
 						}
 						
 						/*
-						 * Opcion de curar mascota
+						 * Opcion de curar mascota si esta existe
 						 */
 						else if (RaidbattleOpt == 3) {
 							if(Assistant != null) {
@@ -474,6 +474,9 @@ public class DriverProgram {
 							}
 						}
 						
+						/*
+						 * Opcion para comnar un ataque con la mascota
+						 */
 						else if (RaidbattleOpt == 4) {
 							if(Assistant != null) {
 								System.out.println("Han atacado al enemigo principal por:" + Assistant.getAttack());
@@ -485,6 +488,9 @@ public class DriverProgram {
 							}
 						}
 						
+						/*
+						 * Opcion para que la mascota defienda al heroe
+						 */
 						else if (RaidbattleOpt == 5) {
 							if(Assistant != null && Assistant.getCurrentHP() > 0) {
 								Assistant.setDefending(true);
@@ -496,6 +502,10 @@ public class DriverProgram {
 							}
 						}
 						
+						/*
+						 * Opcion para lanzar a la mascota si esta esta noqueada, deben de pasar 3 turnos para que se recupere la mascota
+						 * esto es parte de su habilidad pasiva que ocurre al final del turno enemigo
+						 */
 						else if (RaidbattleOpt == 6) {
 							if(Assistant != null && Assistant.isThrowable()) {
 								EventCombat.HeroAttack(Assistant, Enemies, 0);
@@ -524,12 +534,13 @@ public class DriverProgram {
 						turn = 2;
 					}
 					/**
-					 * Para el turno del enemigo, se ataca por cada enemigo en el array
+					 * Para el turno del enemigo, se ataca por cada enemigo en el array de enemigos
 					 */
 					else if(turn == 2) {
 						
 						/*
-						 * Verificacion var saber cual sera el objetivo, caso en el que defiende la mascota
+						 * Verificacion para saber cual sera el objetivo, este es el caso en el que el usuario
+						 * dicidio defenderse con su mascota
 						 */
 						if(Assistant != null && Assistant.isDefending()) {
 							EventCombat.EnemyAttack(Enemies, Assistant);
@@ -538,12 +549,13 @@ public class DriverProgram {
 								if(Enemies.get(i).getHeroType() == 7) {
 									
 									Enemies.get(i).specialAbility();
-									// Y si su habilidad al azar espcial es clonar a la mascota si esta existe
+									// Y si su habilidad al azar espcial es la de clonar a la mascota (habilidad 3) si esta existe
 									if(((ExtraBoss) Enemies.get(i)).getAbilityNumber() == 3 && Assistant != null) {
 										((ExtraBoss) Enemies.get(i)).cloneHeroPet(Assistant);
 										Hero.setCurrentHP(Hero.getCurrentHP() - Assistant.getAttack());
 									}
 								}
+								// LLevar a cabo la habilidad pasiva
 								else {
 									Enemies.get(i).specialAbility();
 								}
@@ -551,14 +563,17 @@ public class DriverProgram {
 							}
 							
 						}
-						
+						/*
+						 * Caso en el cual el usuario no decidio defenderse con la mascota, el recibe los ataques como
+						 * como lo es en general
+						 */
 						else {
 							EventCombat.EnemyAttack(Enemies, Hero);
 							for(int i = 0; i < Enemies.size(); i++) {
 								if(Enemies.get(i).getHeroType() == 7) {
 									
 									Enemies.get(i).specialAbility();
-									// Y si su habilidad al azar espcial es clonar a la mascota si esta existe
+									// Y si su habilidad al azar espcial es la de clonar a la mascota (habilidad 3) si esta existe
 									if(((ExtraBoss) Enemies.get(i)).getAbilityNumber() == 3 && Assistant != null) {
 										((ExtraBoss) Enemies.get(i)).cloneHeroPet(Assistant);
 										Hero.setCurrentHP(Hero.getCurrentHP() - Assistant.getAttack());
@@ -575,7 +590,7 @@ public class DriverProgram {
 							System.exit(0);
 							
 						}
-						//The abilities of the pet are triggered at the end of all turns
+						//Las abilidades de la mascota se activan luego del turno enemigo (FInal de los turnos)
 						if(Assistant != null) {
 							Assistant.setDefending(false);
 							Assistant.specialAbility();
@@ -720,7 +735,7 @@ public class DriverProgram {
 				+ "\nLos cazadores tienen la posibilidad de poder usar mascotas en esta area, pero si no tienes una..... bueno te deseamos suerte :)");
 		
 	}
-	
+	//Menu de raid Battle con todas las opciones
 	private static int RaidbattleMenu(Scanner scan) {
 		System.out.println("\nSelect the action you want to do");
 		System.out.println("1. Atacar          2. Utilizar un item \n" + 
@@ -730,6 +745,7 @@ public class DriverProgram {
 		return Choice;
 	}
 	
+	//Menu para elegir objetivo para raid battle
 	private static int RaidtargetAtack(Scanner scan) {
 		System.out.println("Desea atacar al objetivo 1, 2, o 3 (No ocurrirra nada si eliges un enemigo que ya fue derrotado)");
 		int choice = Integer.parseInt(scan.next());

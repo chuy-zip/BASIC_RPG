@@ -5,7 +5,6 @@ public class ExtraBoss extends MainCharacter{
 	private int CloneTimer;
 	private int AbilityNumber;
 	private MainCharacter Clone;
-	private String name;
 	
 	
 	public ExtraBoss(String name) {
@@ -40,7 +39,7 @@ public class ExtraBoss extends MainCharacter{
 
 	public void cloneHeroPet(MainCharacter heroPet) {
 		Clone = new HeroPet(heroPet.getName());
-		System.out.println(getName() + "Pesadilla a clonado a " + heroPet.getName() + "y lo ha hecho atacar");
+		System.out.println(getName() + "Pesadilla a clonado a " + heroPet.getName() + " y lo ha hecho atacar");
 		
 	}
 	
